@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../utils/constants.dart';
 
-class AdService {
+class AdService extends ChangeNotifier {
   static final AdService _instance = AdService._internal();
   factory AdService() => _instance;
   AdService._internal();
@@ -35,9 +36,11 @@ class AdService {
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           _isBannerLoaded = true;
+          notifyListeners();
         },
         onAdFailedToLoad: (ad, error) {
           _isBannerLoaded = false;
+          notifyListeners();
           ad.dispose();
           // Retry after delay
           Future.delayed(const Duration(seconds: 30), loadBannerAd);
@@ -55,21 +58,25 @@ class AdService {
         onAdLoaded: (ad) {
           _interstitialAd = ad;
           _isInterstitialLoaded = true;
+          notifyListeners();
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
               _isInterstitialLoaded = false;
+              notifyListeners();
               loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
               ad.dispose();
               _isInterstitialLoaded = false;
+              notifyListeners();
               loadInterstitialAd();
             },
           );
         },
         onAdFailedToLoad: (error) {
           _isInterstitialLoaded = false;
+          notifyListeners();
           Future.delayed(const Duration(seconds: 30), loadInterstitialAd);
         },
       ),
@@ -85,21 +92,25 @@ class AdService {
         onAdLoaded: (ad) {
           _rewardedAd = ad;
           _isRewardedLoaded = true;
+          notifyListeners();
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
               _isRewardedLoaded = false;
+              notifyListeners();
               loadRewardedAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
               ad.dispose();
               _isRewardedLoaded = false;
+              notifyListeners();
               loadRewardedAd();
             },
           );
         },
         onAdFailedToLoad: (error) {
           _isRewardedLoaded = false;
+          notifyListeners();
           Future.delayed(const Duration(seconds: 30), loadRewardedAd);
         },
       ),
@@ -138,9 +149,11 @@ class AdService {
     return rewarded;
   }
 
+  @override
   void dispose() {
     bannerAd?.dispose();
     _interstitialAd?.dispose();
     _rewardedAd?.dispose();
+    super.dispose();
   }
 }

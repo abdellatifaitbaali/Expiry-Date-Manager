@@ -251,14 +251,19 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildBannerAd() {
-    if (!_adService.isBannerLoaded || _adService.bannerAd == null) {
-      return const SizedBox(height: 50);
-    }
-    return Container(
-      color: AppConstants.surfaceColor,
-      width: double.infinity,
-      height: _adService.bannerAd!.size.height.toDouble(),
-      child: AdWidget(ad: _adService.bannerAd!),
+    return AnimatedBuilder(
+      animation: _adService,
+      builder: (context, child) {
+        if (!_adService.isBannerLoaded || _adService.bannerAd == null) {
+          return const SizedBox(height: 50);
+        }
+        return Container(
+          color: AppConstants.surfaceColor,
+          width: double.infinity,
+          height: _adService.bannerAd!.size.height.toDouble(),
+          child: AdWidget(ad: _adService.bannerAd!),
+        );
+      },
     );
   }
 
