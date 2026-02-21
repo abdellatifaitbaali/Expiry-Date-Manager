@@ -1,0 +1,46 @@
+name: expiry_date_manager
+description: "Track expiry dates, get reminders, reduce waste. Scan barcodes to add items fast."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Local database
+  hive: any
+  hive_flutter: any
+
+  # State management
+  provider: any
+
+  # Barcode scanning
+  mobile_scanner: any
+
+  # Notifications
+  flutter_local_notifications: any
+  timezone: any
+
+  # Ads
+  google_mobile_ads: any
+
+  # Utilities
+  uuid: any
+  intl: any
+  url_launcher: any
+  permission_handler: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  hive_generator: any
+  build_runner: any
+
+flutter:
+  uses-material-design: true
